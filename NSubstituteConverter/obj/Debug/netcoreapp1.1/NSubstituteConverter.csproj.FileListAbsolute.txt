@@ -1,0 +1,11 @@
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\bin\Debug\netcoreapp1.1\NSubstituteConverter.deps.json
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\bin\Debug\netcoreapp1.1\NSubstituteConverter.runtimeconfig.json
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\bin\Debug\netcoreapp1.1\NSubstituteConverter.runtimeconfig.dev.json
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\bin\Debug\netcoreapp1.1\NSubstituteConverter.dll
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\bin\Debug\netcoreapp1.1\NSubstituteConverter.pdb
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\obj\Debug\netcoreapp1.1\NSubstituteConverter.AssemblyInfo.cs
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\obj\Debug\netcoreapp1.1\NSubstituteConverter.dll
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\obj\Debug\netcoreapp1.1\NSubstituteConverter.pdb
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\bin\Debug\netcoreapp1.1\NSubstituteConverter.Core.dll
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\bin\Debug\netcoreapp1.1\NSubstituteConverter.Core.pdb
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter\obj\Debug\netcoreapp1.1\NSubstituteConverter.csprojResolveAssemblyReference.cache

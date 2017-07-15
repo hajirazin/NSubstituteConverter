@@ -1,0 +1,7 @@
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter.Core\bin\Debug\netstandard1.6\NSubstituteConverter.Core.deps.json
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter.Core\bin\Debug\netstandard1.6\NSubstituteConverter.Core.dll
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter.Core\bin\Debug\netstandard1.6\NSubstituteConverter.Core.pdb
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter.Core\obj\Debug\netstandard1.6\NSubstituteConverter.Core.csprojResolveAssemblyReference.cache
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter.Core\obj\Debug\netstandard1.6\NSubstituteConverter.Core.AssemblyInfo.cs
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter.Core\obj\Debug\netstandard1.6\NSubstituteConverter.Core.dll
+C:\OpenSource\hajirazin\NSubstituteConverter\NSubstituteConverter.Core\obj\Debug\netstandard1.6\NSubstituteConverter.Core.pdb
