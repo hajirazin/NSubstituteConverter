@@ -1,0 +1,38 @@
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies.Invocation
+{
+    public class ReturnWithIgnore : IInvocationStrategy
+    {
+        public bool IsEligible(InvocationExpressionSyntax node)
+        {
+            var nodeString = node.ToString();
+            if (!(node.Expression is MemberAccessExpressionSyntax smes))
+                return false;
+
+            var nodeNameString = smes.Name.ToString();
+            return (nodeString.Contains(".Expect") || nodeString.Contains("Stub")) &&
+                   nodeNameString.Contains("Return") &&
+                   nodeString.Contains("Ignore");
+        }
+
+        public SyntaxNode Visit(InvocationExpressionSyntax node)
+        {
+            var maes = (MemberAccessExpressionSyntax)node.Expression;
+            var smes =
+                (InvocationExpressionSyntax)((MemberAccessExpressionSyntax)
+                    ((InvocationExpressionSyntax)maes.Expression).Expression)
+                .Expression;
+            var iex = ((MemberAccessExpressionSyntax)smes.Expression).Expression;
+            var a =
+                (InvocationExpressionSyntax)((SimpleLambdaExpressionSyntax)smes.ArgumentList.Arguments[0]
+                    .Expression).Body;
+            var x = a.WithExpression(((MemberAccessExpressionSyntax)a.Expression).WithExpression(iex));
+            maes = maes.WithExpression(x).WithName(SyntaxFactory.IdentifierName("ReturnsForAnyArgs"));
+            var invocationExpressionSyntax = node.WithExpression(maes);
+            return invocationExpressionSyntax;
+        }
+    }
+}
