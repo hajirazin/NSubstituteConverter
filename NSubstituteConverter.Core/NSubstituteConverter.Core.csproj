@@ -164,31 +164,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\FileRewritter.cs" />
     <Compile Include="Converters\ProjectConverter.cs" />
     <Compile Include="Converters\FileConverter.cs" />
     <Compile Include="Converters\SolutionConverter.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="MoqToNSubstitute\Rewritter.cs" />
     <Compile Include="Projects\Project.cs" />
     <Compile Include="Projects\ProjectXml.cs" />
     <Compile Include="Projects\Solution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RhinoMockToNSubstitude\InvocationRewritter.cs" />
-    <Compile Include="RhinoMockToNSubstitude\MemberAccessRewritter.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Rewritter.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\Assert.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\ExpectWithoutReturn.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\IInvocationStrategy.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\Repeat.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\Throw.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\WhenCalled.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\MemberAccess\ArgAnything.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\MemberAccess\ArgIsEqual.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\MemberAccess\ArgMatches.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\Ignore.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\MemberAccess\IMemberAccessStrategy.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\MemberAccess\MockRepository.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\Return.cs" />
-    <Compile Include="RhinoMockToNSubstitude\Strategies\Invocation\ReturnWithIgnore.cs" />
+    <Compile Include="RhinoMockToNSubstitute\InvocationRewritter.cs" />
+    <Compile Include="RhinoMockToNSubstitute\MemberAccessRewritter.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Rewritter.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\Assert.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\ExpectWithoutReturn.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\IInvocationStrategy.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\Repeat.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\Throw.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\WhenCalled.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\MemberAccess\ArgAnything.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\MemberAccess\ArgIsEqual.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\MemberAccess\ArgMatches.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\Ignore.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\MemberAccess\IMemberAccessStrategy.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\MemberAccess\MockRepository.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\Return.cs" />
+    <Compile Include="RhinoMockToNSubstitute\Strategies\Invocation\ReturnWithIgnore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

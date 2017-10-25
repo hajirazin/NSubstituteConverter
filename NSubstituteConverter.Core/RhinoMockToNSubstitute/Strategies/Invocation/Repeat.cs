@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies.Invocation
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
 {
     public class Repeat : IInvocationStrategy
     {

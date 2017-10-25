@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using NSubstituteConverter.Core.Projects;
 
 namespace NSubstituteConverter.Core.Converters
 {
@@ -19,9 +15,9 @@ namespace NSubstituteConverter.Core.Converters
     }
     public class FileConverter : IFileConverter
     {
-        private readonly CSharpSyntaxRewriter _syntaxRewriter;
+        private readonly FileRewritter _syntaxRewriter;
 
-        public FileConverter(CSharpSyntaxRewriter syntaxRewriter)
+        public FileConverter(FileRewritter syntaxRewriter)
         {
             _syntaxRewriter = syntaxRewriter;
         }
@@ -32,9 +28,12 @@ namespace NSubstituteConverter.Core.Converters
             var text = File.ReadAllText(file);
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
             var root = syntaxTree.GetRoot();
-            root = _syntaxRewriter.Visit(root);
-            var code = Prettify(root);
-            File.WriteAllText(file, code);
+            if (_syntaxRewriter.IsValidFile(root as CompilationUnitSyntax))
+            {
+                root = _syntaxRewriter.Visit(root);
+                var code = Prettify(root);
+                File.WriteAllText(file, code);
+            }
         }
 
         private static string Prettify(SyntaxNode root)

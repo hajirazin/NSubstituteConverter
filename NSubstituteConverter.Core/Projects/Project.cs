@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NSubstituteConverter.Core.Projects
 {
@@ -18,20 +15,17 @@ namespace NSubstituteConverter.Core.Projects
         }
 
         public bool HasRhinoMockReference => _projectXml.HasRhinoMockReference;
+        public bool HasMoqReference => _projectXml.HasMoqReference;
+        public bool HasNSubstituteReference => _projectXml.HasNSubstituteReference;
+
 
         public string ProjectPath { get; }
 
-        public Project RemoveRhinoMockReference()
-        {
-            _projectXml.RemoveRhinoMockReference();
-            return this;
-        }
+        public void RemoveRhinoMockReference() => _projectXml.RemoveRhinoMockReference();
 
-        public Project AddNSubstitudeReference()
-        {
-            _projectXml.AddNSubstitudeReference();
-            return this;
-        }
+        public void RemoveMoqMockReference() => _projectXml.RemoveMoqMockReference();
+
+        public void AddNSubstituteReference() => _projectXml.AddNSubstituteReference();
 
         public List<string> Files
         {

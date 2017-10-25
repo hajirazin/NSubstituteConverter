@@ -3,23 +3,21 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies.MemberAccess
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.MemberAccess
 {
-    public class ArgAnything : IMemberAccessStrategy
+    public class ArgMatches : IMemberAccessStrategy
     {
         public bool IsEligible(MemberAccessExpressionSyntax node)
         {
             var nodeString = node.ToString();
             var nodeNameString = node.Name.ToString();
-            return nodeString.Contains("Arg") &&
-                   (nodeNameString.Contains("Anything") || nodeNameString.Contains("TypeOf"));
+            return nodeString.Contains("Arg") && nodeNameString.Contains("Matches");
         }
 
         public SyntaxNode Visit(MemberAccessExpressionSyntax node)
         {
             var nodeString = node.ToString();
-            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>).Is.Anything", "Arg.Any$1()");
-            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>).Is.TypeOf", "Arg.Any$1()");
+            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>)(.*)Matches", "Arg.Is$1", RegexOptions.Singleline);
             return SyntaxFactory.ParseExpression(nodeString);
         }
     }

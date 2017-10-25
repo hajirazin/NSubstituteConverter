@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace NSubstituteConverter.Core.Projects
@@ -12,31 +9,45 @@ namespace NSubstituteConverter.Core.Projects
     {
         private readonly string _projectPath;
         private string _projectFileText;
+        private const string BuildNameSpace = "xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\"";
+        private const string BuildTarget = "DefaultTargets=\"Build\"";
 
         public ProjectXml(string projectPath)
         {
             _projectPath = projectPath;
             _projectFileText = File.ReadAllText(projectPath);
             HasRhinoMockReference = _projectFileText.Contains("Rhino.Mocks");
+            HasMoqReference = _projectFileText.Contains("Moq");
+            HasNSubstituteReference = _projectFileText.Contains("NSubstitute");
         }
 
         public bool HasRhinoMockReference { get; }
-
+        public bool HasMoqReference { get; }
+        public bool HasNSubstituteReference { get; }
         public void RemoveRhinoMockReference()
         {
-            var xml = XDocument.Parse(_projectFileText.Replace("xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\"", ""));
-            xml.Descendants("Reference").Where(f => f.Attribute("Include")?.Value.Contains("Rhino.Mocks") ?? false).Remove();
+            RemoveReference("Rhino.Mocks");
+        }
+
+        public void RemoveMoqMockReference()
+        {
+            RemoveReference("Moq");
+        }
+
+        private void RemoveReference(string mockString)
+        {
+            var xml = XDocument.Parse(_projectFileText.Replace(BuildNameSpace, ""));
+            xml.Descendants("Reference").Where(f => f.Attribute("Include")?.Value.Contains(mockString) ?? false).Remove();
             var sb = new StringBuilder();
             xml.Save(new StringWriter(sb));
-            sb = sb.Replace("DefaultTargets=\"Build\"",
-                "DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\"");
+            sb = sb.Replace(BuildTarget, $"{BuildTarget} {BuildNameSpace}");
             _projectFileText = sb.ToString();
             File.WriteAllText(_projectPath, _projectFileText);
         }
 
-        public void AddNSubstitudeReference()
+        public void AddNSubstituteReference()
         {
-            var xml = XDocument.Parse(_projectFileText.Replace("xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\"", ""));
+            var xml = XDocument.Parse(_projectFileText.Replace(BuildNameSpace, ""));
             var x = xml.Descendants("ItemGroup").ToList();
             var d = x.FirstOrDefault(f => f.Descendants("Reference").Any());
             if (d != null)
@@ -50,8 +61,7 @@ namespace NSubstituteConverter.Core.Projects
                 _projectFileText = sb.ToString();
             }
 
-            _projectFileText = _projectFileText.Replace("DefaultTargets=\"Build\"",
-                "DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\"");
+            _projectFileText = _projectFileText.Replace(BuildTarget, $"{BuildTarget} {BuildNameSpace}");
             File.WriteAllText(_projectPath, _projectFileText);
         }
     }

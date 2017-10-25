@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies.Invocation;
+using NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitude
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute
 {
     public partial class Rewritter
     {
@@ -47,7 +45,7 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitude
                             return convertedObject;
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Logger.Log("Exception in VisitInvocationExpression", ConsoleColor.Yellow);
                     }

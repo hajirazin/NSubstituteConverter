@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using NSubstituteConverter.Core.Converters;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitude
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute
 {
-    public partial class Rewritter : CSharpSyntaxRewriter
+    public partial class Rewritter : FileRewritter
     {
         public override SyntaxNode VisitUsingDirective(UsingDirectiveSyntax node)
         {
@@ -66,6 +65,11 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitude
             }
 
             return base.VisitExpressionStatement(node);
+        }
+
+        public override bool IsValidFile(CompilationUnitSyntax root)
+        {
+            return root != null && root.Usings.ToList().Any(u => u.Name.ToString().Contains("Rhino.Mocks"));
         }
 
         public override SyntaxNode VisitEmptyStatement(EmptyStatementSyntax node)

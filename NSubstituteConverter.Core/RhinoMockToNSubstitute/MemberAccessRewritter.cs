@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies;
-using NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies.Invocation;
-using NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies.MemberAccess;
+using NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.MemberAccess;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitude
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute
 {
     public partial class Rewritter
     {

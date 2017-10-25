@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitude.Strategies.MemberAccess
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.MemberAccess
 {
     public class MockRepository : IMemberAccessStrategy
     {
