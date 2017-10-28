@@ -6,13 +6,12 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NSubstituteConverter.Core.Converters;
+using NSubstituteConverter.Core.Helpers;
 
 namespace NSubstituteConverter.Core.MoqToNSubstitute
 {
     public partial class Rewritter : FileRewritter
     {
-        private static readonly ConcurrentDictionary<string, int> VariableCount = new ConcurrentDictionary<string, int>();
-
         public override SyntaxNode VisitUsingDirective(UsingDirectiveSyntax node)
         {
             if (node.Name.ToString().Contains("Moq"))
@@ -120,28 +119,7 @@ namespace NSubstituteConverter.Core.MoqToNSubstitute
                     else if (lambdaExpression.Body is MemberAccessExpressionSyntax me)
                     {
                         var x = me.WithExpression(G(memberAccessExpression.Expression, node.ArgumentList.Arguments[1].Expression));
-
-                        string GetMethodName()
-                        {
-                            var nn = node.Parent;
-                            while (nn != null)
-                            {
-                                if (nn is MethodDeclarationSyntax method)
-                                    return method.Identifier.ValueText;
-
-                                nn = nn.Parent;
-                            }
-
-                            return string.Empty;
-                        }
-
-                        var str = x.ToString();
-                        var methodName = GetMethodName();
-                        VariableCount.GetOrAdd(methodName, -1);
-                        VariableCount[methodName]++;
-                        var count = VariableCount[methodName];
-                        str = $"var x{(count == 0 ? "" : count.ToString())} = " + str;
-                        var statement = SyntaxFactory.ParseExpression(str);
+                        var statement = Mollifier.MakeCompilerHappy(x);
                         return statement;
                     }
                 }

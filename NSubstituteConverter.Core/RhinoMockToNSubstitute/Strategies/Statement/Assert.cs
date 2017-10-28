@@ -2,9 +2,9 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Statement
 {
-    public class Assert : IInvocationStrategy
+    public class Assert : IStatementStrategy
     {
         private readonly string _fromString;
         private readonly string _toString;
@@ -15,23 +15,24 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
             _toString = toString;
         }
 
-        public bool IsEligible(InvocationExpressionSyntax node)
+        public bool IsEligible(ExpressionStatementSyntax expressionStatement)
         {
-            return node.ToString().Contains(_fromString);
+            return expressionStatement.ToString().Contains(_fromString);
         }
 
-        public SyntaxNode Visit(InvocationExpressionSyntax node)
+        public ExpressionStatementSyntax Visit(ExpressionStatementSyntax expressionStatement)
         {
+            if (!(expressionStatement.Expression is InvocationExpressionSyntax node)) return expressionStatement;
             var body = ((SimpleLambdaExpressionSyntax)node.ArgumentList.Arguments[0].Expression).Body;
             if (body is InvocationExpressionSyntax call)
             {
-                var sme = (MemberAccessExpressionSyntax) call.Expression;
-                var nodeExpression = ((MemberAccessExpressionSyntax) node.Expression).Expression;
+                var sme = (MemberAccessExpressionSyntax)call.Expression;
+                var nodeExpression = ((MemberAccessExpressionSyntax)node.Expression).Expression;
                 var x = SyntaxFactory.InvocationExpression(SyntaxFactory.MemberAccessExpression(sme.Kind(),
                     nodeExpression, SyntaxFactory.Token(SyntaxKind.DotToken),
                     SyntaxFactory.IdentifierName(_toString)));
                 var d = call.WithExpression(sme.WithExpression(x));
-                return d;
+                return expressionStatement.WithExpression(d);
             }
             else if (body is AssignmentExpressionSyntax assignment)
             {
@@ -41,17 +42,24 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
                     nodeExpression, SyntaxFactory.Token(SyntaxKind.DotToken),
                     SyntaxFactory.IdentifierName(_toString)));
                 var d = assignment.WithLeft(left.WithExpression(x));
-                return d;
+                return expressionStatement.WithExpression(d);
             }
             else if (body is BlockSyntax)
             {
                 var nodeString = node.ToString();
-                nodeString = nodeString.Replace(_fromString, "When");
-                nodeString = nodeString + "." + _toString + "()";
-                return SyntaxFactory.ParseExpression(nodeString);
+                if (nodeString.Contains("Ignore"))
+                {
+                    nodeString = nodeString.Replace(_fromString, _toString + "().WhenForAnyArgs");
+                    nodeString = nodeString.Replace(".IgnoreArguments()", string.Empty);
+                }
+                else
+                {
+                    nodeString = nodeString.Replace(_fromString, _toString + "().When");
+                }
+                return expressionStatement.WithExpression(SyntaxFactory.ParseExpression(nodeString));
             }
 
-            return node;
+            return expressionStatement.WithExpression(node);
         }
     }
 }

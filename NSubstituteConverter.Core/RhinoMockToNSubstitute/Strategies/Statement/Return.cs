@@ -2,12 +2,14 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Statement
 {
-    public class Return : IInvocationStrategy
+    public class Return : IStatementStrategy
     {
-        public bool IsEligible(InvocationExpressionSyntax node)
+        public bool IsEligible(ExpressionStatementSyntax expressionStatement)
         {
+            if (!(expressionStatement.Expression is InvocationExpressionSyntax node))
+                return false;
             var nodeString = node.ToString();
             if (!(node.Expression is MemberAccessExpressionSyntax smes))
                 return false;
@@ -18,8 +20,9 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
                    nodeNameString.Contains("Return");
         }
 
-        public SyntaxNode Visit(InvocationExpressionSyntax node)
+        public ExpressionStatementSyntax Visit(ExpressionStatementSyntax expressionStatement)
         {
+            if (!(expressionStatement.Expression is InvocationExpressionSyntax node)) return expressionStatement;
             var smes = (MemberAccessExpressionSyntax)node.Expression;
             var ies = (InvocationExpressionSyntax)smes.Expression;
             var iex = ((MemberAccessExpressionSyntax)ies.Expression).Expression;
@@ -48,10 +51,10 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
             {
                 var str = n.ToString();
                 str = str.Replace("null", "(object)null");
-                return SyntaxFactory.ParseExpression(str);
+                return expressionStatement.WithExpression(SyntaxFactory.ParseExpression(str));
             }
 
-            return n;
+            return expressionStatement.WithExpression(n);
         }
     }
 }

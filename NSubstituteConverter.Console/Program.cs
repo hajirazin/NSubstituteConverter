@@ -9,8 +9,8 @@ namespace NSubstituteConverter.Console
         {
             Logger.Init();
             var converter = new SolutionConverter();
-            converter.Convert(@"C:\TTL\web\source\WebComponents\");
-            //converter.Convert(@"C:\TTL\web\source\WebComponents\Common\Framework\WebTestLibrary\src");
+            //converter.Convert(@"C:\TTL\web\source\WebComponents\");
+            converter.Convert(@"C:\TTL\web\source\WebComponents\JourneyOptions\test\UnitTests");
             Logger.Log("End ...");
             System.Console.ReadLine();
         }

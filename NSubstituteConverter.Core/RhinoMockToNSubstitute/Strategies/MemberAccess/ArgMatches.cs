@@ -17,7 +17,7 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.MemberAcce
         public SyntaxNode Visit(MemberAccessExpressionSyntax node)
         {
             var nodeString = node.ToString();
-            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>)(.*)Matches", "Arg.Is$1", RegexOptions.Singleline);
+            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9,_ <>\\[\\]]+>)(.*)Matches", "Arg.Is$1", RegexOptions.Singleline);
             return SyntaxFactory.ParseExpression(nodeString);
         }
     }

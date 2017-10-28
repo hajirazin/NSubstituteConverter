@@ -2,12 +2,14 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Statement
 {
-    public class ReturnWithIgnore : IInvocationStrategy
+    public class ReturnWithIgnore : IStatementStrategy
     {
-        public bool IsEligible(InvocationExpressionSyntax node)
+        public bool IsEligible(ExpressionStatementSyntax expressionStatement)
         {
+            if (!(expressionStatement.Expression is InvocationExpressionSyntax node))
+                return false;
             var nodeString = node.ToString();
             if (!(node.Expression is MemberAccessExpressionSyntax smes))
                 return false;
@@ -18,8 +20,9 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
                    nodeString.Contains("Ignore");
         }
 
-        public SyntaxNode Visit(InvocationExpressionSyntax node)
+        public ExpressionStatementSyntax Visit(ExpressionStatementSyntax expressionStatement)
         {
+            if (!(expressionStatement.Expression is InvocationExpressionSyntax node)) return expressionStatement;
             var maes = (MemberAccessExpressionSyntax)node.Expression;
             var smes =
                 (InvocationExpressionSyntax)((MemberAccessExpressionSyntax)
@@ -32,7 +35,7 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
             var x = a.WithExpression(((MemberAccessExpressionSyntax)a.Expression).WithExpression(iex));
             maes = maes.WithExpression(x).WithName(SyntaxFactory.IdentifierName("ReturnsForAnyArgs"));
             var invocationExpressionSyntax = node.WithExpression(maes);
-            return invocationExpressionSyntax;
+            return expressionStatement.WithExpression(invocationExpressionSyntax);
         }
     }
 }

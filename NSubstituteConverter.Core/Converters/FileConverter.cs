@@ -23,13 +23,12 @@ namespace NSubstituteConverter.Core.Converters
         }
         public void Convert(string file)
         {
-            Logger.Log($"Starting Convertion of file {Path.GetFileNameWithoutExtension(file)}", ConsoleColor.Red);
-
             var text = File.ReadAllText(file);
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
             var root = syntaxTree.GetRoot();
             if (_syntaxRewriter.IsValidFile(root as CompilationUnitSyntax))
             {
+                Logger.Log($"Starting Convertion of file {Path.GetFileNameWithoutExtension(file)}", ConsoleColor.Red);
                 root = _syntaxRewriter.Visit(root);
                 var code = Prettify(root);
                 File.WriteAllText(file, code);

@@ -18,9 +18,10 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.MemberAcce
         public SyntaxNode Visit(MemberAccessExpressionSyntax node)
         {
             var nodeString = node.ToString();
-            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>).Is.Equal", "Arg.Is");
-            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>).Is.Same", "Arg.Is");
-            nodeString = Regex.Replace(nodeString, "Arg<([a-zA-Z0-9_ <>\\[\\]]+)>.Is.Null", "Arg.Is(($1)null)");
+            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9,_ <>\\[\\]]+>).Is.Equal", "Arg.Is");
+            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9,_ <>\\[\\]]+>).Is.Same", "Arg.Is");
+            nodeString = Regex.Replace(nodeString, "Arg<([a-zA-Z0-9,_ <>\\[\\]]+)>.Is.Null", "Arg.Is(($1)null)");
+            nodeString = Regex.Replace(nodeString, "Arg<([a-zA-Z0-9,_ <>\\[\\]]+)>.Is.NotNull", "Arg.Is<$1>(a => a != null)");
             return SyntaxFactory.ParseExpression(nodeString);
         }
     }

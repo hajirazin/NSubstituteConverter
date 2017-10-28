@@ -40,7 +40,8 @@ namespace NSubstituteConverter.Core.Projects
             xml.Descendants("Reference").Where(f => f.Attribute("Include")?.Value.Contains(mockString) ?? false).Remove();
             var sb = new StringBuilder();
             xml.Save(new StringWriter(sb));
-            sb = sb.Replace(BuildTarget, $"{BuildTarget} {BuildNameSpace}");
+            sb = sb.Replace(BuildTarget, $"{BuildTarget} {BuildNameSpace}").Replace("utf-16", "utf-8");
+            
             _projectFileText = sb.ToString();
             File.WriteAllText(_projectPath, _projectFileText);
         }
@@ -58,11 +59,10 @@ namespace NSubstituteConverter.Core.Projects
                 d.Add(xElement);
                 var sb = new StringBuilder();
                 xml.Save(new StringWriter(sb));
+                sb = sb.Replace(BuildTarget, $"{BuildTarget} {BuildNameSpace}").Replace("utf-16", "utf-8");
                 _projectFileText = sb.ToString();
+                File.WriteAllText(_projectPath, _projectFileText);
             }
-
-            _projectFileText = _projectFileText.Replace(BuildTarget, $"{BuildTarget} {BuildNameSpace}");
-            File.WriteAllText(_projectPath, _projectFileText);
         }
     }
 }

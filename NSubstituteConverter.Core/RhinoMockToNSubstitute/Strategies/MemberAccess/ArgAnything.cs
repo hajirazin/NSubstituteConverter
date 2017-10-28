@@ -18,8 +18,8 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.MemberAcce
         public SyntaxNode Visit(MemberAccessExpressionSyntax node)
         {
             var nodeString = node.ToString();
-            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>).Is.Anything", "Arg.Any$1()");
-            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9_ <>\\[\\]]+>).Is.TypeOf", "Arg.Any$1()");
+            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9,_ <>\\[\\]]+>).Is.Anything", "Arg.Any$1()");
+            nodeString = Regex.Replace(nodeString, "Arg(<[a-zA-Z0-9,_ <>\\[\\]]+>).Is.TypeOf", "Arg.Any$1()");
             return SyntaxFactory.ParseExpression(nodeString);
         }
     }

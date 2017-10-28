@@ -2,47 +2,42 @@
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation;
+using NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Statement;
 
 namespace NSubstituteConverter.Core.RhinoMockToNSubstitute
 {
     public partial class Rewritter
     {
-        private static readonly List<IInvocationStrategy> InvocationStrategies = new List<IInvocationStrategy>
+        private static readonly List<IStatementStrategy> StatementStrategies = new List<IStatementStrategy>
         {
+            new Remover(),
             new Throw(),
             new WhenCalled(),
+            new PropertyBehavior(),
             new Assert("AssertWasCalled", "Received"),
             new Assert("AssertWasNotCalled", "DidNotReceive"),
+            new Repeat(),
             new ReturnWithIgnore(),
             new Return(),
             new ExpectWithoutReturn(),
-            new Ignore(),
-            new Repeat("Any", "Received()" ),
-            new Repeat("Twice", "Received(2)" ),
-            new Repeat("AtLeastOnce", "Received(1)" ),
-            new Repeat("Once", "Received(1)" ),
-            new Repeat("Never", "DidNotReceive()" )
+            new Ignore()
         };
 
-        public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
+        public override SyntaxNode VisitExpressionStatement(ExpressionStatementSyntax node)
         {
             try
             {
-                foreach (var strategy in InvocationStrategies)
+                foreach (var strategy in StatementStrategies)
                 {
                     try
                     {
                         if (strategy.IsEligible(node))
                         {
                             var convertedObject = strategy.Visit(node);
-                            if (convertedObject is InvocationExpressionSyntax m)
-                            {
-                                node = m;
-                                continue;
-                            }
+                            if (convertedObject == null)
+                                return null;
 
-                            return convertedObject;
+                            node = convertedObject;
                         }
                     }
                     catch (Exception ex)
@@ -56,7 +51,7 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute
                 Logger.Log("Exception in VisitInvocationExpression", ConsoleColor.Yellow);
             }
 
-            return base.VisitInvocationExpression(node);
+            return base.VisitExpressionStatement(node);
         }
     }
 }

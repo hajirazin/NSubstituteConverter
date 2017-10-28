@@ -2,12 +2,14 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
+namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Statement
 {
-    public class Ignore : IInvocationStrategy
+    public class Ignore : IStatementStrategy
     {
-        public bool IsEligible(InvocationExpressionSyntax node)
+        public bool IsEligible(ExpressionStatementSyntax expressionStatement)
         {
+            if (!(expressionStatement.Expression is InvocationExpressionSyntax node))
+                return false;
             if (!(node.Expression is MemberAccessExpressionSyntax member))
                 return false;
 
@@ -15,8 +17,9 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
             return nodeNameString.Equals("IgnoreArguments");
         }
 
-        public SyntaxNode Visit(InvocationExpressionSyntax node)
+        public ExpressionStatementSyntax Visit(ExpressionStatementSyntax expressionStatement)
         {
+            if (!(expressionStatement.Expression is InvocationExpressionSyntax node)) return expressionStatement;
             var nodeString = node.ToString();
             if (nodeString.Contains("ReturnsForAnyArgs") || nodeString.Contains("ReceivedWithAnyArgs"))
             {
@@ -26,7 +29,7 @@ namespace NSubstituteConverter.Core.RhinoMockToNSubstitute.Strategies.Invocation
             nodeString = nodeString.Contains("Returns")
                 ? nodeString.Replace("IgnoreArguments()", "").Replace("Returns", "ReturnsForAnyArgs")
                 : nodeString.Replace("IgnoreArguments", "ReceivedWithAnyArgs");
-            return SyntaxFactory.ParseExpression(nodeString);
+            return expressionStatement.WithExpression(SyntaxFactory.ParseExpression(nodeString));
         }
     }
 }
